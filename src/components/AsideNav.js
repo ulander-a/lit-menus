@@ -17,7 +17,6 @@ export class AsideNav extends LitElement {
   `;
 
   render() {
-    console.log(this.items);
     return html`
       <aside>
         <ul>

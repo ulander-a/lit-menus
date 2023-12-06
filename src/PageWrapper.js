@@ -1,14 +1,23 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
+import { ContextConsumer } from "@lit/context";
+
 import { AsideNav } from "./components/AsideNav";
 import { TopNav } from "./components/TopNav";
+import { SetAudienceForm } from "./components/SetAudienceForm";
 
+import { audienceContext } from "./contexts";
 import { formatNavData } from "./lib/formatNavData";
 
 export class PageWrapper extends LitElement {
   static properties = {
     navigation: { type: Array },
   };
+
+  _audienceConsumer = new ContextConsumer(this, {
+    context: audienceContext,
+    subscribe: true,
+  });
 
   _fetchNavigation = new Task(this, {
     task: async url => {
@@ -31,6 +40,9 @@ export class PageWrapper extends LitElement {
   `;
 
   render() {
+    const falukropp = this._audienceConsumer.value;
+    console.log(falukropp);
+
     return html`
       ${this._fetchNavigation.render({
         initial: () => html`<p>unga bunga</p>`,
@@ -40,8 +52,10 @@ export class PageWrapper extends LitElement {
             <top-nav .items=${this.navigation.top}></top-nav>
             <aside-nav .items=${this.navigation.aside}></aside-nav>
             <main>
-              <h1>Web components</h1>
+              <h1>Web components 🧩</h1>
+              <h2>audience:</h2>
               <slot></slot>
+              <set-audience-form></set-audience-form>
             </main>
           </div>
         `,
