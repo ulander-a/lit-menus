@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
-import { AsideNav } from "./AsideNav";
-import { TopNav } from "./TopNav";
+import { AsideNav } from "./components/AsideNav";
+import { TopNav } from "./components/TopNav";
 
 import { formatNavData } from "./lib/formatNavData";
 
@@ -22,6 +22,7 @@ export class PageWrapper extends LitElement {
   static styles = css`
     main {
       padding: 20px;
+      height: 300px;
     }
 
     h1 {

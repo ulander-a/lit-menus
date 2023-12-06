@@ -6,6 +6,16 @@ export class AsideNav extends LitElement {
     items: { type: Array },
   };
 
+  static styles = css`
+    aside {
+      background-color: orange;
+    }
+
+    ul {
+      margin: 0;
+    }
+  `;
+
   render() {
     console.log(this.items);
     return html`
@@ -15,6 +25,17 @@ export class AsideNav extends LitElement {
             link => html`
               <li>
                 <a href="${link.path}">${link.title}</a>
+                ${link.type === "WRAPPER" && link.items.length > 0
+                  ? html`<ul>
+                      ${link.items.map(
+                        child => html`
+                          <li>
+                            <a href="${child.path}"> ${child.title} </a>
+                          </li>
+                        `
+                      )}
+                    </ul>`
+                  : html``}
               </li>
             `
           )}
