@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
-import { ContextConsumer } from "@lit/context";
+import { ContextProvider } from "@lit/context";
 
 import { AsideNav } from "./components/AsideNav";
 import { TopNav } from "./components/TopNav";
@@ -12,11 +12,12 @@ import { formatNavData } from "./lib/formatNavData";
 export class PageWrapper extends LitElement {
   static properties = {
     navigation: { type: Array },
+    audience: { type: Text },
   };
 
-  _audienceConsumer = new ContextConsumer(this, {
+  _provider = new ContextProvider(this, {
     context: audienceContext,
-    subscribe: true,
+    initialValue: "BANAN", // Default value, change as needed
   });
 
   _fetchNavigation = new Task(this, {
@@ -27,6 +28,13 @@ export class PageWrapper extends LitElement {
     },
     args: () => [`http://localhost:1337/api/navigation/render/1?type=TREE`],
   });
+
+  constructor() {
+    super();
+    const urlParams = new URLSearchParams(window.location.search);
+    this.audience = urlParams.get("audience") || "DEFAULT";
+    this._provider.setValue(this.audience);
+  }
 
   static styles = css`
     main {
@@ -40,9 +48,6 @@ export class PageWrapper extends LitElement {
   `;
 
   render() {
-    const falukropp = this._audienceConsumer.value;
-    console.log(falukropp);
-
     return html`
       ${this._fetchNavigation.render({
         initial: () => html`<p>unga bunga</p>`,
@@ -53,7 +58,6 @@ export class PageWrapper extends LitElement {
             <aside-nav .items=${this.navigation.aside}></aside-nav>
             <main>
               <h1>Web components 🧩</h1>
-              <h2>audience:</h2>
               <slot></slot>
               <set-audience-form></set-audience-form>
             </main>
