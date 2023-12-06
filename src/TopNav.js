@@ -5,7 +5,7 @@ import { DebugText } from "./DebugText";
 
 export class TopNav extends LitElement {
   static properties = {
-    navlinks: { type: Array },
+    items: { type: Array },
   };
 
   static styles = css`
@@ -29,20 +29,12 @@ export class TopNav extends LitElement {
   `;
 
   render() {
-    this.navlinks = [
-      { target: "/foo", text: "foo" },
-      { target: "/bar", text: "bar" },
-      { target: "/pepsi", text: "pepsi" },
-      { target: "/coninius", text: "coninius" },
-      { target: "/banana", text: "banana" },
-      { target: "/unga bunga", text: "unga bunga" },
-    ];
     return html`
       <header>
         <ul>
-          ${this.navlinks.map(
+          ${this.items.map(
             link => html`<li>
-              <a href="${link.target}">${link.text}</a>
+              <a href="${link.path}">${link.title}</a>
             </li>`
           )}
         </ul>

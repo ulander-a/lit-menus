@@ -1,4 +1,9 @@
 export const formatNavData = navData => {
-  console.log(navData);
-  return [];
+  const menuAttachedItems = navData.filter(item => item.menuAttached === true);
+  const asideNavItems = navData;
+
+  return {
+    top: menuAttachedItems,
+    aside: asideNavItems,
+  };
 };

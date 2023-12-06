@@ -16,7 +16,7 @@ export class PageWrapper extends LitElement {
       const responseData = await response.json();
       this.navigation = formatNavData(responseData);
     },
-    args: () => [`http://localhost:1337/api/navigation/render/1`],
+    args: () => [`http://localhost:1337/api/navigation/render/1?type=TREE`],
   });
 
   static styles = css`
@@ -30,15 +30,14 @@ export class PageWrapper extends LitElement {
   `;
 
   render() {
-    console.log(this.navigation);
     return html`
       ${this._fetchNavigation.render({
         initial: () => html`<p>unga bunga</p>`,
         pending: () => html`<p>pending...</p>`,
         complete: () => html`
           <div>
-            <top-nav></top-nav>
-            <aside-nav></aside-nav>
+            <top-nav .items=${this.navigation.top}></top-nav>
+            <aside-nav .items=${this.navigation.aside}></aside-nav>
             <main>
               <h1>Web components</h1>
               <slot></slot>

@@ -3,25 +3,18 @@ import { DebugText } from "./DebugText";
 
 export class AsideNav extends LitElement {
   static properties = {
-    navlinks: { type: Array },
+    items: { type: Array },
   };
 
   render() {
-    this.navlinks = [
-      { target: "/foo", text: "foo" },
-      { target: "/bar", text: "bar" },
-      { target: "/pepsi", text: "pepsi" },
-      { target: "/coninius", text: "coninius" },
-      { target: "/banana", text: "banana" },
-      { target: "/unga bunga", text: "unga bunga" },
-    ];
+    console.log(this.items);
     return html`
       <aside>
         <ul>
-          ${this.navlinks.map(
+          ${this.items.map(
             link => html`
               <li>
-                <a href="${link.target}">${link.text}</a>
+                <a href="${link.path}">${link.title}</a>
               </li>
             `
           )}
