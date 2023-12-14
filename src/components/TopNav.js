@@ -32,6 +32,9 @@ export class TopNav extends LitElement {
     return html`
       <header>
         <ul>
+          <li>
+            <button @click="${this.toggleMenu}">BORGIR</button>
+          </li>
           ${this.items.map(
             link => html`<li>
               <a href="${link.path}">${link.title}</a>
@@ -41,6 +44,14 @@ export class TopNav extends LitElement {
         <debug-text text="TopNav"></debug-text>
       </header>
     `;
+  }
+
+  toggleMenu() {
+    const event = new Event("toggleMenuClicked", {
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(event);
   }
 }
 

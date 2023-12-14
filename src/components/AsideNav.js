@@ -4,11 +4,18 @@ import { DebugText } from "./DebugText";
 export class AsideNav extends LitElement {
   static properties = {
     items: { type: Array },
+    showMenu: { type: Boolean },
   };
 
   static styles = css`
     aside {
       background-color: orange;
+      // position: absolute;
+      width: 500px;
+    }
+
+    .hidden {
+      display: none;
     }
 
     ul {
@@ -18,18 +25,20 @@ export class AsideNav extends LitElement {
 
   render() {
     return html`
-      <aside>
+      <aside class="${this.showMenu ? "" : "hidden"}">
         <ul>
           ${this.items.map(
             link => html`
               <li>
                 <a href="${link.path}">${link.title}</a>
-                ${link.type === "WRAPPER" && link.items.length > 0
+                ${this.showMenu &&
+                link.type === "WRAPPER" &&
+                link.items.length > 0
                   ? html`<ul>
                       ${link.items.map(
                         child => html`
                           <li>
-                            <a href="${child.path}"> ${child.title} </a>
+                            <a href="${child.path}">${child.title}</a>
                           </li>
                         `
                       )}

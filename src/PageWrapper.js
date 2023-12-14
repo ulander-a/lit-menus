@@ -13,11 +13,12 @@ export class PageWrapper extends LitElement {
   static properties = {
     navigation: { type: Array },
     audience: { type: Text },
+    showMenu: { type: Boolean },
   };
 
   _provider = new ContextProvider(this, {
     context: audienceContext,
-    initialValue: "BANAN", // Default value, change as needed
+    initialValue: "BANANA", // Default value, change as needed
   });
 
   _fetchNavigation = new Task(this, {
@@ -41,6 +42,12 @@ export class PageWrapper extends LitElement {
     const urlParams = new URLSearchParams(window.location.search);
     this.audience = urlParams.get("audience") || "DEFAULT";
     this._provider.setValue(this.audience);
+    this.showMenu = true;
+
+    this.addEventListener(
+      "toggleMenuClicked",
+      e => (this.showMenu = !this.showMenu)
+    );
   }
 
   static styles = css`
@@ -61,8 +68,11 @@ export class PageWrapper extends LitElement {
         pending: () => html`<p>pending...</p>`,
         complete: () => html`
           <div>
-            <top-nav .items=${this.navigation.top}></top-nav>
-            <aside-nav .items=${this.navigation.aside}></aside-nav>
+            <top-nav .items=${this.navigation.top}> hamburglar </top-nav>
+            <aside-nav
+              .items=${this.navigation.aside}
+              .showMenu=${this.showMenu}
+            ></aside-nav>
             <main>
               <h1>Web components 🧩</h1>
               <slot></slot>
