@@ -24,6 +24,13 @@ export class PageWrapper extends LitElement {
     task: async url => {
       const response = await fetch(url);
       const responseData = await response.json();
+
+      if (responseData.error) {
+        throw new Error(
+          `${responseData.error.status}: ${responseData.error.message}`
+        );
+      }
+
       this.navigation = formatNavData(responseData);
     },
     args: () => [`http://localhost:1337/api/navigation/render/1?type=TREE`],
