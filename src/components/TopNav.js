@@ -1,15 +1,14 @@
 import { LitElement, html, css } from "lit";
 import { DebugText } from "./DebugText";
 
-// https://market.strapi.io/plugins/strapi-plugin-navigation
-
 export class TopNav extends LitElement {
   static properties = {
     items: { type: Array },
+    showMenu: { type: Boolean },
   };
 
   static styles = css`
-    header {
+    nav {
       background-color: aquamarine;
     }
 
@@ -26,14 +25,29 @@ export class TopNav extends LitElement {
       margin: 0;
       padding: 0;
     }
+
+    li button {
+      border: 0;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+      font-size: 24px;
+    }
   `;
 
   render() {
     return html`
-      <header>
+      <nav id="top-nav" role="navigation" aria-label="Main menu">
         <ul>
           <li>
-            <button @click="${this.toggleMenu}">BORGIR</button>
+            <!-- Button triggering submenu within the same component -->
+            <button
+              id="nav-button"
+              @click="${this.toggleMenu}"
+              aria-expanded="${this.showMenu}"
+            >
+              ☰
+            </button>
           </li>
           ${this.items.map(
             link => html`<li>
@@ -42,14 +56,19 @@ export class TopNav extends LitElement {
           )}
         </ul>
         <debug-text text="TopNav"></debug-text>
-      </header>
+      </nav>
     `;
   }
 
-  toggleMenu() {
-    const event = new Event("toggleMenuClicked", {
+  toggleMenu(interaction) {
+    // Pass along interaction type so we can autofocus the toggled menu for keyboard users
+    const interactionType = interaction.detail ? "MOUSE" : "KEYBOARD";
+    const event = new CustomEvent("menuToggle", {
       bubbles: true,
       composed: true,
+      detail: {
+        interactionType: interactionType,
+      },
     });
     this.dispatchEvent(event);
   }

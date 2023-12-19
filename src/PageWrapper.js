@@ -16,6 +16,17 @@ export class PageWrapper extends LitElement {
     showMenu: { type: Boolean },
   };
 
+  static styles = css`
+    main {
+      padding: 20px;
+      height: 300px;
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+  `;
+
   _provider = new ContextProvider(this, {
     context: audienceContext,
     initialValue: "BANANA", // Default value, change as needed
@@ -39,36 +50,36 @@ export class PageWrapper extends LitElement {
 
   constructor() {
     super();
+
     const urlParams = new URLSearchParams(window.location.search);
     this.audience = urlParams.get("audience") || "DEFAULT";
+    this.showMenu = false;
     this._provider.setValue(this.audience);
-    this.showMenu = true;
 
-    this.addEventListener(
-      "toggleMenuClicked",
-      e => (this.showMenu = !this.showMenu)
-    );
+    this.addEventListener("menuToggle", e => {
+      const hamburger = this.shadowRoot
+        .querySelector("top-nav")
+        .shadowRoot.querySelector("button#nav-button");
+
+      if (this.showMenu && e.detail.interactionType === "ESCAPE") {
+        hamburger.focus();
+      }
+
+      this.showMenu = !this.showMenu;
+    });
   }
-
-  static styles = css`
-    main {
-      padding: 20px;
-      height: 300px;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-  `;
 
   render() {
     return html`
       ${this._fetchNavigation.render({
-        initial: () => html`<p>unga bunga</p>`,
+        initial: () => html`<p>initial ...</p>`,
         pending: () => html`<p>pending...</p>`,
         complete: () => html`
           <div>
-            <top-nav .items=${this.navigation.top}> hamburglar </top-nav>
+            <top-nav
+              .items=${this.navigation.top}
+              .showMenu=${this.showMenu}
+            ></top-nav>
             <aside-nav
               .items=${this.navigation.aside}
               .showMenu=${this.showMenu}

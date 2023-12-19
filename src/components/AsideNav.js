@@ -8,14 +8,13 @@ export class AsideNav extends LitElement {
   };
 
   static styles = css`
-    aside {
+    nav {
       background-color: orange;
-      // position: absolute;
       width: 500px;
     }
 
     .hidden {
-      display: none;
+      visibility: hidden;
     }
 
     ul {
@@ -25,32 +24,50 @@ export class AsideNav extends LitElement {
 
   render() {
     return html`
-      <aside class="${this.showMenu ? "" : "hidden"}">
+      <nav
+        id="aside-nav"
+        role="navigation"
+        aria-label="Aside menu"
+        class="${this.showMenu ? "" : "hidden"}"
+        @keydown="${this.handleKeydown}"
+        tabindex="0"
+      >
         <ul>
           ${this.items.map(
-            link => html`
-              <li>
-                <a href="${link.path}">${link.title}</a>
-                ${this.showMenu &&
-                link.type === "WRAPPER" &&
-                link.items.length > 0
-                  ? html`<ul>
-                      ${link.items.map(
-                        child => html`
-                          <li>
-                            <a href="${child.path}">${child.title}</a>
-                          </li>
-                        `
-                      )}
-                    </ul>`
-                  : html``}
-              </li>
-            `
+            link => html`<li>
+              <a href="${link.path}">${link.title}</a>
+              ${this.showMenu &&
+              link.type === "WRAPPER" &&
+              link.items.length > 0
+                ? html`<ul>
+                    ${link.items.map(
+                      child => html`<li>
+                        <a href="${child.path}">${child.title}</a>
+                      </li>`
+                    )}
+                  </ul>`
+                : html``}
+            </li>`
           )}
         </ul>
         <debug-text text="AsideNav"></debug-text>
-      </aside>
+      </nav>
     `;
+  }
+
+  handleKeydown(e) {
+    // If key is escape, close menu and focus hamburger
+    if (e.key === "Escape") {
+      const event = new CustomEvent("menuToggle", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          interactionType: "ESCAPE",
+        },
+      });
+
+      this.dispatchEvent(event);
+    }
   }
 }
 
