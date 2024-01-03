@@ -10,7 +10,7 @@ export class TopNav extends LitElement {
 
   static styles = css`
     nav {
-      background-color: aquamarine;
+      background-color: var(--color-gold, green);
     }
 
     ul {
@@ -18,6 +18,7 @@ export class TopNav extends LitElement {
       flex-direction: row;
       justify-content: space-evenly;
       margin: 0;
+      padding: 0;
     }
 
     li {

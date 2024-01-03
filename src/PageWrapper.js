@@ -17,9 +17,17 @@ export class PageWrapper extends LitElement {
   };
 
   static styles = css`
+    :host {
+      --color-black: #000;
+      --color-midnight-blue: #14213d;
+      --color-gold: #fca311;
+      --color-silver: #e5e5e5;
+      --color-white: #fff;
+    }
+
     main {
       padding: 20px;
-      height: 300px;
+      min-height: 300px;
     }
 
     h1 {
