@@ -61,8 +61,17 @@ export class PageWrapper extends LitElement {
         .querySelector("top-nav")
         .shadowRoot.querySelector("button#nav-button");
 
+      const menu = this.shadowRoot
+        .querySelector("aside-nav")
+        .shadowRoot.querySelector("nav#aside-nav ul");
+
       if (this.showMenu && e.detail.interactionType === "ESCAPE") {
         hamburger.focus();
+      } else if (!this.showMenu) {
+        // Slightly hacky solution to set focus on an element after it gets "unhidden"
+        setTimeout(() => {
+          menu.children[0].children[0].focus();
+        }, 0);
       }
 
       this.showMenu = !this.showMenu;

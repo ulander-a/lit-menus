@@ -14,7 +14,7 @@ export class AsideNav extends LitElement {
     }
 
     .hidden {
-      visibility: hidden;
+      display: none;
     }
 
     ul {
@@ -30,7 +30,6 @@ export class AsideNav extends LitElement {
         aria-label="Aside menu"
         class="${this.showMenu ? "" : "hidden"}"
         @keydown="${this.handleKeydown}"
-        tabindex="0"
       >
         <ul>
           ${this.items.map(
