@@ -16,8 +16,7 @@ export class TopNav extends LitElement {
     ul {
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
-      width: 600px;
+      justify-content: space-evenly;
       margin: 0;
     }
 

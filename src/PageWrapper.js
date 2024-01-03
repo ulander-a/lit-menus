@@ -57,7 +57,7 @@ export class PageWrapper extends LitElement {
         );
       }
 
-      this.navigation = formatNavData(responseData);
+      this.navigation = formatNavData(responseData, this.audience);
     },
     args: () => [`http://localhost:1337/api/navigation/render/1?type=TREE`],
   });
