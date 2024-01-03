@@ -1,6 +1,8 @@
 import { LitElement, html, css } from "lit";
 import { DebugText } from "./DebugText";
 
+import { handleArrowNavigation } from "../lib/keyboardNavigation";
+
 export class AsideNav extends LitElement {
   static properties = {
     items: { type: Array },
@@ -55,7 +57,6 @@ export class AsideNav extends LitElement {
   }
 
   handleKeydown(e) {
-    // If key is escape, close menu and focus hamburger
     if (e.key === "Escape") {
       const event = new CustomEvent("menuToggle", {
         bubbles: true,
@@ -66,6 +67,10 @@ export class AsideNav extends LitElement {
       });
 
       this.dispatchEvent(event);
+    } else {
+      const linksList = this.shadowRoot.querySelectorAll("a");
+      const activeLink = this.shadowRoot.activeElement;
+      handleArrowNavigation(e, linksList, activeLink);
     }
   }
 }

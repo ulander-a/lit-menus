@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { DebugText } from "./DebugText";
+import { handleArrowNavigation } from "../lib/keyboardNavigation";
 
 export class TopNav extends LitElement {
   static properties = {
@@ -37,14 +38,19 @@ export class TopNav extends LitElement {
 
   render() {
     return html`
-      <nav id="top-nav" role="navigation" aria-label="Main menu">
+      <nav
+        id="top-nav"
+        role="navigation"
+        aria-label="Main menu"
+        @keydown="${this.handleKeydown}"
+      >
         <ul>
           <li>
-            <!-- Button triggering submenu within the same component -->
             <button
               id="nav-button"
               @click="${this.toggleMenu}"
               aria-expanded="${this.showMenu}"
+              aria-label="${this.showMenu ? "Close menu" : "Open menu"}"
             >
               ☰
             </button>
@@ -61,7 +67,6 @@ export class TopNav extends LitElement {
   }
 
   toggleMenu(interaction) {
-    // Pass along interaction type so we can autofocus the toggled menu for keyboard users
     const interactionType = interaction.detail ? "MOUSE" : "KEYBOARD";
     const event = new CustomEvent("menuToggle", {
       bubbles: true,
@@ -71,6 +76,14 @@ export class TopNav extends LitElement {
       },
     });
     this.dispatchEvent(event);
+  }
+
+  handleKeydown(e) {
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      const linksList = this.shadowRoot.querySelectorAll("a");
+      const activeLink = this.shadowRoot.activeElement;
+      handleArrowNavigation(e, linksList, activeLink);
+    }
   }
 }
 

@@ -25,6 +25,20 @@ export class PageWrapper extends LitElement {
     h1 {
       margin-top: 0;
     }
+
+    .skip-to-content-link {
+      background: #e77e23;
+      height: 30px;
+      left: 50%;
+      padding: 8px;
+      position: absolute;
+      transform: translateY(-100%);
+      transition: transform 0.3s;
+    }
+
+    .skip-to-content-link:focus {
+      transform: translateY(0%);
+    }
   `;
 
   _provider = new ContextProvider(this, {
@@ -67,7 +81,7 @@ export class PageWrapper extends LitElement {
 
       if (this.showMenu && e.detail.interactionType === "ESCAPE") {
         hamburger.focus();
-      } else if (!this.showMenu) {
+      } else if (!this.showMenu && e.detail.interactionType === "KEYBOARD") {
         // Slightly hacky solution to set focus on an element after it gets "unhidden"
         setTimeout(() => {
           menu.children[0].children[0].focus();
@@ -85,6 +99,13 @@ export class PageWrapper extends LitElement {
         pending: () => html`<p>pending...</p>`,
         complete: () => html`
           <div>
+            <a
+              class="skip-to-content-link"
+              href="#main"
+              @click="${() => this.shadowRoot.getElementById("main").focus()}"
+            >
+              Skip to content
+            </a>
             <top-nav
               .items=${this.navigation.top}
               .showMenu=${this.showMenu}
@@ -93,7 +114,7 @@ export class PageWrapper extends LitElement {
               .items=${this.navigation.aside}
               .showMenu=${this.showMenu}
             ></aside-nav>
-            <main>
+            <main id="main" tabindex="-1">
               <h1>Web components 🧩</h1>
               <slot></slot>
               <set-audience-form></set-audience-form>
