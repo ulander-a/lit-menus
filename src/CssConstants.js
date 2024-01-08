@@ -7,7 +7,7 @@ export const constants = css`
     --color-cyan: #75c8ae;
     --color-brown: #621704;
     --color-beige: #ffcd98;
-    --color-orange-red: #621704;
+    --color-orange-red: #f54d1e;
     --color-orange-yellow: #ff9a24;
   }
 `;

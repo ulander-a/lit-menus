@@ -34,7 +34,7 @@ export class SetAudienceForm extends LitElement {
           <legend>Set audience</legend>
           <small>
             Current audience:
-            <debug-text text="${this._consumer.value}"></debug-text>
+            <span>${this._consumer.value}</span>
           </small>
           <div>
             <label for="audience">Audience:</label>
@@ -45,6 +45,7 @@ export class SetAudienceForm extends LitElement {
             />
           </div>
           <button @click="${this.submit}">Do the thing</button>
+          <debug-text text="SetAudienceForm"></debug-text>
         </fieldset>
       </form>
     `;

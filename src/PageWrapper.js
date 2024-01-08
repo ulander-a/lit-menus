@@ -25,7 +25,7 @@ export class PageWrapper extends LitElement {
         margin: 20px;
         padding: 20px;
         min-height: 300px;
-        background-color: var(--color-yellow);
+        background-color: var(--color-beige);
         border-radius: 20px;
       }
 
@@ -103,8 +103,8 @@ export class PageWrapper extends LitElement {
   render() {
     return html`
       ${this._fetchNavigation.render({
-        initial: () => html`<p>initial ...</p>`,
-        pending: () => html`<p>pending...</p>`,
+        initial: () => html`<main><p>Hello!</p></main>`,
+        pending: () => html`<main><p>Loading...</p></main>`,
         complete: () => html`
           <div>
             <a
@@ -129,7 +129,8 @@ export class PageWrapper extends LitElement {
             </main>
           </div>
         `,
-        error: error => html`<p>something went horribly wrong: ${error}</p>`,
+        error: error =>
+          html`<main><p>Something went horribly wrong: ${error}</p></main>`,
       })}
     `;
   }

@@ -2,6 +2,8 @@ import { LitElement, html, css } from "lit";
 import { DebugText } from "./DebugText";
 import { handleArrowNavigation } from "../lib/keyboardNavigation";
 
+import logo from "../assets/transparentnanner.png";
+
 export class TopNav extends LitElement {
   static properties = {
     items: { type: Array },
@@ -10,13 +12,16 @@ export class TopNav extends LitElement {
 
   static styles = css`
     nav {
-      background-color: var(--color-beige);
+      background-color: var(--color-orange-yellow);
+      border-end-end-radius: 80px 80px;
+      border-end-start-radius: 80px 80px;
     }
 
     ul {
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;
+      align-items: center;
       margin: 0;
       padding: 0;
     }
@@ -36,9 +41,33 @@ export class TopNav extends LitElement {
     }
 
     li a {
+      display: block;
+      line-height: 1;
+      height: fit-content;
+      text-decoration: none;
+    }
+
+    li .navlink {
       color: var(--color-brown);
+      border-bottom: 5px solid var(--color-brown);
       font-weight: 600;
       font-size: 24px;
+      box-sizing: border-box;
+    }
+
+    li .navlink:hover {
+      border-color: var(--color-cyan);
+    }
+
+    #logo {
+      height: 50px;
+    }
+
+    #nav-button {
+      height: 50px;
+      width: 50px;
+      font-size: 36px;
+      line-height: 1;
     }
   `;
 
@@ -50,7 +79,12 @@ export class TopNav extends LitElement {
         aria-label="Main menu"
         @keydown="${this.handleKeydown}"
       >
-        <ul>
+      <ul>
+        <li>
+          <a href="/">
+            <img id="logo" src="${logo}"></img>
+          </a>
+      </li>
           <li>
             <button
               id="nav-button"
@@ -63,7 +97,7 @@ export class TopNav extends LitElement {
           </li>
           ${this.items.map(
             link => html`<li>
-              <a href="${link.path}">${link.title}</a>
+              <a href="${link.path}" class="navlink">${link.title}</a>
             </li>`
           )}
         </ul>
