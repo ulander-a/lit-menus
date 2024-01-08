@@ -10,7 +10,7 @@ export class TopNav extends LitElement {
 
   static styles = css`
     nav {
-      background-color: var(--color-gold, green);
+      background-color: var(--color-beige);
     }
 
     ul {
@@ -32,6 +32,12 @@ export class TopNav extends LitElement {
       padding: 0;
       background: none;
       cursor: pointer;
+      font-size: 24px;
+    }
+
+    li a {
+      color: var(--color-brown);
+      font-weight: 600;
       font-size: 24px;
     }
   `;

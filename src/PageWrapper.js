@@ -9,6 +9,8 @@ import { SetAudienceForm } from "./components/SetAudienceForm";
 import { audienceContext } from "./contexts";
 import { formatNavData } from "./lib/formatNavData";
 
+import { constants as cssConstants } from "./CssConstants";
+
 export class PageWrapper extends LitElement {
   static properties = {
     navigation: { type: Array },
@@ -16,38 +18,36 @@ export class PageWrapper extends LitElement {
     showMenu: { type: Boolean },
   };
 
-  static styles = css`
-    :host {
-      --color-black: #000;
-      --color-midnight-blue: #14213d;
-      --color-gold: #fca311;
-      --color-silver: #e5e5e5;
-      --color-white: #fff;
-    }
+  static styles = [
+    cssConstants,
+    css`
+      main {
+        margin: 20px;
+        padding: 20px;
+        min-height: 300px;
+        background-color: var(--color-yellow);
+        border-radius: 20px;
+      }
 
-    main {
-      padding: 20px;
-      min-height: 300px;
-    }
+      h1 {
+        margin-top: 0;
+      }
 
-    h1 {
-      margin-top: 0;
-    }
+      .skip-to-content-link {
+        background: #e77e23;
+        height: 30px;
+        left: 50%;
+        padding: 8px;
+        position: absolute;
+        transform: translateY(-100%);
+        transition: transform 0.3s;
+      }
 
-    .skip-to-content-link {
-      background: #e77e23;
-      height: 30px;
-      left: 50%;
-      padding: 8px;
-      position: absolute;
-      transform: translateY(-100%);
-      transition: transform 0.3s;
-    }
-
-    .skip-to-content-link:focus {
-      transform: translateY(0%);
-    }
-  `;
+      .skip-to-content-link:focus {
+        transform: translateY(0%);
+      }
+    `,
+  ];
 
   _provider = new ContextProvider(this, {
     context: audienceContext,
