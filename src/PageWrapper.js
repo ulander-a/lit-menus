@@ -16,6 +16,7 @@ export class PageWrapper extends LitElement {
     navigation: { type: Array },
     audience: { type: Text },
     showMenu: { type: Boolean },
+    showDebugText: { type: Boolean },
   };
 
   static styles = [
@@ -49,7 +50,7 @@ export class PageWrapper extends LitElement {
     `,
   ];
 
-  _provider = new ContextProvider(this, {
+  _audienceProvider = new ContextProvider(this, {
     context: audienceContext,
     initialValue: "BANANA", // Default value, change as needed
   });
@@ -76,7 +77,7 @@ export class PageWrapper extends LitElement {
     const urlParams = new URLSearchParams(window.location.search);
     this.audience = urlParams.get("audience") || "DEFAULT";
     this.showMenu = false;
-    this._provider.setValue(this.audience);
+    this._audienceProvider.setValue(this.audience);
 
     this.addEventListener("menuToggle", e => {
       const hamburger = this.shadowRoot

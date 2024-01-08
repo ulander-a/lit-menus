@@ -1,21 +1,33 @@
 import { LitElement, html, css } from "lit";
-import { ContextConsumer } from "@lit/context";
-import { audienceContext } from "../contexts";
+import { ContextProvider, ContextConsumer } from "@lit/context";
+import { audienceContext, debugTextContext } from "../contexts";
+
 import { DebugText } from "./DebugText";
 
 export class SetAudienceForm extends LitElement {
   static properties = {
     audience: { type: Text },
+    showDebugText: { type: Boolean },
   };
 
-  _consumer = new ContextConsumer(this, {
+  _consumerAudience = new ContextConsumer(this, {
     context: audienceContext,
+    subscribe: true,
+  });
+
+  _consumerDebugText = new ContextConsumer(this, {
+    context: debugTextContext,
     subscribe: true,
   });
 
   static styles = css`
     form {
       width: fit-content;
+    }
+
+    form fieldset {
+      border-color: var(--color-brown);
+      border-radius: 25px;
     }
 
     form button {
@@ -27,32 +39,42 @@ export class SetAudienceForm extends LitElement {
     }
   `;
 
+  constructor() {
+    super();
+    this.audience = this._consumerAudience.value;
+    this.showDebugText = this._consumerDebugText.value;
+  }
+
   render() {
     return html`
-      <form>
+      <form @submit="${this.submit}">
         <fieldset>
           <legend>Set audience</legend>
           <small>
             Current audience:
-            <span>${this._consumer.value}</span>
+            <span>${this.audience}</span>
           </small>
           <div>
             <label for="audience">Audience:</label>
+            <input type="text" name="audience" value="${this.audience}" />
+
+            <label for="show-component-names">Show debug-text (TODO):</label>
             <input
-              type="text"
-              name="audience"
-              value="${this._consumer.value}"
+              type="checkbox"
+              name="show-component-names"
+              .checked="${this.showDebugText}"
             />
           </div>
-          <button @click="${this.submit}">Do the thing</button>
+          <button>Do the thing</button>
           <debug-text text="SetAudienceForm"></debug-text>
         </fieldset>
       </form>
     `;
   }
 
-  submit() {
-    // Implement your logic here
+  submit(e) {
+    e.preventDefault();
+    console.log(this.audience);
   }
 }
 

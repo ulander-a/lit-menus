@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { DebugText } from "./DebugText";
+
 import { handleArrowNavigation } from "../lib/keyboardNavigation";
 
 import logo from "../assets/transparentnanner.png";
@@ -15,24 +16,35 @@ export class TopNav extends LitElement {
       background-color: var(--color-orange-yellow);
       border-end-end-radius: 80px 80px;
       border-end-start-radius: 80px 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 50px;
+      min-width: fit-content;
+    }
+
+    nav div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      min-width: 200px;
     }
 
     ul {
       display: flex;
       flex-direction: row;
-      justify-content: space-evenly;
       align-items: center;
-      margin: 0;
+      margin-right: auto;
       padding: 0;
     }
 
     li {
       list-style: none;
-      margin: 0;
+      margin: 0 30px;
       padding: 0;
     }
 
-    li button {
+    button {
       border: 0;
       padding: 0;
       background: none;
@@ -40,7 +52,7 @@ export class TopNav extends LitElement {
       font-size: 24px;
     }
 
-    li a {
+    a {
       display: block;
       line-height: 1;
       height: fit-content;
@@ -55,7 +67,8 @@ export class TopNav extends LitElement {
       box-sizing: border-box;
     }
 
-    li .navlink:hover {
+    li .navlink:hover,
+    li .navlink:focus {
       border-color: var(--color-cyan);
     }
 
@@ -73,36 +86,34 @@ export class TopNav extends LitElement {
 
   render() {
     return html`
-      <nav
-        id="top-nav"
-        role="navigation"
-        aria-label="Main menu"
-        @keydown="${this.handleKeydown}"
+    <nav
+      id="top-nav"
+      role="navigation"
+      aria-label="Main menu"
+      @keydown="${this.handleKeydown}"
+    >
+    <div>    
+      <a href="/">
+        <img id="logo" src="${logo}"></img>
+      </a>
+      <button
+        id="nav-button"
+        @click="${this.toggleMenu}"
+        aria-expanded="${this.showMenu}"
+        aria-label="${this.showMenu ? "Close menu" : "Open menu"}"
       >
+        ☰
+      </button>
+    </div>
       <ul>
-        <li>
-          <a href="/">
-            <img id="logo" src="${logo}"></img>
-          </a>
-      </li>
-          <li>
-            <button
-              id="nav-button"
-              @click="${this.toggleMenu}"
-              aria-expanded="${this.showMenu}"
-              aria-label="${this.showMenu ? "Close menu" : "Open menu"}"
-            >
-              ☰
-            </button>
-          </li>
           ${this.items.map(
             link => html`<li>
               <a href="${link.path}" class="navlink">${link.title}</a>
             </li>`
           )}
-        </ul>
-        <debug-text text="TopNav"></debug-text>
+      </ul>
       </nav>
+    <debug-text text="TopNav"></debug-text>
     `;
   }
 
@@ -120,7 +131,7 @@ export class TopNav extends LitElement {
 
   handleKeydown(e) {
     if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-      const linksList = this.shadowRoot.querySelectorAll("a");
+      const linksList = this.shadowRoot.querySelectorAll("a.navlink");
       const activeLink = this.shadowRoot.activeElement;
       handleArrowNavigation(e, linksList, activeLink);
     }

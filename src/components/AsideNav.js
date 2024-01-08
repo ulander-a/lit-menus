@@ -11,8 +11,12 @@ export class AsideNav extends LitElement {
 
   static styles = css`
     nav {
-      background-color: orange;
+      background-color: var(--color-orange-red);
       width: 500px;
+      margin-left: 80px;
+      position: absolute;
+      z-index: 99;
+      padding: 30px 0;
     }
 
     .hidden {
@@ -21,6 +25,18 @@ export class AsideNav extends LitElement {
 
     ul {
       margin: 0;
+      list-style: none;
+    }
+
+    ul a {
+      color: var(--color-brown);
+      text-decoration: none;
+      border-bottom: 1px solid;
+    }
+
+    ul a:hover,
+    ul a:focus {
+      border-color: var(--color-cyan);
     }
   `;
 
@@ -37,9 +53,7 @@ export class AsideNav extends LitElement {
           ${this.items.map(
             link => html`<li>
               <a href="${link.path}">${link.title}</a>
-              ${this.showMenu &&
-              link.type === "WRAPPER" &&
-              link.items.length > 0
+              ${link.type === "WRAPPER" && link.items.length > 0
                 ? html`<ul>
                     ${link.items.map(
                       child => html`<li>

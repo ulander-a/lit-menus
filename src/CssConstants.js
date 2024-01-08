@@ -9,5 +9,13 @@ export const constants = css`
     --color-beige: #ffcd98;
     --color-orange-red: #f54d1e;
     --color-orange-yellow: #ff9a24;
+    font-family: "Space Mono", monospace;
+    color: var(--color-brown);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Monoton", monospace;
   }
 `;

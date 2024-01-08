@@ -1,9 +1,16 @@
 import { LitElement, html, css } from "lit";
+import { ContextConsumer } from "@lit/context";
+import { debugTextContext } from "../contexts";
 
 export class DebugText extends LitElement {
   static properties = {
     text: { type: Text },
   };
+
+  _consumerDebugText = new ContextConsumer(this, {
+    context: debugTextContext,
+    subscribe: true,
+  });
 
   static styles = css`
     .debug-text {
@@ -23,7 +30,9 @@ export class DebugText extends LitElement {
   `;
 
   render() {
-    return html` <div class="debug-text"><pre>${this.text}</pre></div> `;
+    return this._consumerDebugText.value
+      ? html` <div class="debug-text"><pre>${this.text}</pre></div> `
+      : html``;
   }
 }
 
