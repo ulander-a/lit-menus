@@ -9,5 +9,5 @@
 
 ```
 eval `ssh-agent -s`
-ssh-add ~/.ssh/github_rsa
+ssh-add ~/.ssh/github
 ```
