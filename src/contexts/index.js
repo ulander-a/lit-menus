@@ -1,5 +1,3 @@
 import { createContext } from "@lit/context";
 
-export const audienceContext = createContext(Symbol("audience-context"));
-
-export const debugTextContext = createContext(Symbol("debug-text-context"));
+export const appContext = createContext(Symbol("app-context"));

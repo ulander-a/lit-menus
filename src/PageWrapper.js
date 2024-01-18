@@ -6,7 +6,7 @@ import { AsideNav } from "./components/AsideNav";
 import { TopNav } from "./components/TopNav";
 import { SetAudienceForm } from "./components/SetAudienceForm";
 
-import { audienceContext } from "./contexts";
+import { appContext } from "./contexts";
 import { formatNavData } from "./lib/formatNavData";
 
 import { constants as cssConstants } from "./CssConstants";
@@ -14,9 +14,7 @@ import { constants as cssConstants } from "./CssConstants";
 export class PageWrapper extends LitElement {
   static properties = {
     navigation: { type: Array },
-    audience: { type: Text },
     showMenu: { type: Boolean },
-    showDebugText: { type: Boolean },
   };
 
   static styles = [
@@ -50,9 +48,12 @@ export class PageWrapper extends LitElement {
     `,
   ];
 
-  _audienceProvider = new ContextProvider(this, {
-    context: audienceContext,
-    initialValue: "BANANA", // Default value, change as needed
+  _appContextProvider = new ContextProvider(this, {
+    context: appContext,
+    initialValue: {
+      audience: "BANAN",
+      showDebugText: false,
+    },
   });
 
   _fetchNavigation = new Task(this, {
@@ -75,9 +76,10 @@ export class PageWrapper extends LitElement {
     super();
 
     const urlParams = new URLSearchParams(window.location.search);
-    this.audience = urlParams.get("audience") || "DEFAULT";
-    this.showMenu = false;
-    this._audienceProvider.setValue(this.audience);
+    this._appContextProvider.setValue({
+      audience: urlParams.get("audience") || "DEFAULT",
+      ...this._appContextProvider,
+    });
 
     this.addEventListener("menuToggle", e => {
       const hamburger = this.shadowRoot

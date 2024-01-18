@@ -1,24 +1,11 @@
 import { LitElement, html, css } from "lit";
-import { ContextProvider, ContextConsumer } from "@lit/context";
-import { audienceContext, debugTextContext } from "../contexts";
+import { ContextConsumer } from "@lit/context";
+import { appContext } from "../contexts";
 
 import { DebugText } from "./DebugText";
 
 export class SetAudienceForm extends LitElement {
-  static properties = {
-    audience: { type: Text },
-    showDebugText: { type: Boolean },
-  };
-
-  _consumerAudience = new ContextConsumer(this, {
-    context: audienceContext,
-    subscribe: true,
-  });
-
-  _consumerDebugText = new ContextConsumer(this, {
-    context: debugTextContext,
-    subscribe: true,
-  });
+  _appContextConsumer = new ContextConsumer(this, { context: appContext });
 
   static styles = css`
     form {
@@ -39,30 +26,26 @@ export class SetAudienceForm extends LitElement {
     }
   `;
 
-  constructor() {
-    super();
-    this.audience = this._consumerAudience.value;
-    this.showDebugText = this._consumerDebugText.value;
-  }
-
   render() {
+    const { audience, showDebugText } = this._appContextConsumer.value;
+
     return html`
       <form @submit="${this.submit}">
         <fieldset>
           <legend>Set audience</legend>
           <small>
             Current audience:
-            <span>${this.audience}</span>
+            <span>${audience}</span>
           </small>
           <div>
             <label for="audience">Audience:</label>
-            <input type="text" name="audience" value="${this.audience}" />
+            <input type="text" name="audience" value="${audience}" />
 
             <label for="show-component-names">Show debug-text (TODO):</label>
             <input
               type="checkbox"
               name="show-component-names"
-              .checked="${this.showDebugText}"
+              .checked="${showDebugText}"
             />
           </div>
           <button>Do the thing</button>
