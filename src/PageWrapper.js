@@ -101,6 +101,15 @@ export class PageWrapper extends LitElement {
 
       this.showMenu = !this.showMenu;
     });
+
+    this.addEventListener("updateAppContext", e => {
+      const { audience, showDebugText } = e.detail.payload;
+
+      this._appContextProvider.setValue({
+        audience: audience,
+        showDebugText: showDebugText,
+      });
+    });
   }
 
   render() {

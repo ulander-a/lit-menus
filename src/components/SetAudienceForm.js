@@ -38,13 +38,14 @@ export class SetAudienceForm extends LitElement {
             <span>${audience}</span>
           </small>
           <div>
-            <label for="audience">Audience:</label>
-            <input type="text" name="audience" value="${audience}" />
+            <label for="input-audience">Audience:</label>
+            <input type="text" name="input-audience" value="${audience}" />
 
-            <label for="show-component-names">Show debug-text (TODO):</label>
+            <label for="input-show-debug-text">Show debug-text:</label>
             <input
               type="checkbox"
-              name="show-component-names"
+              name="input-show-debug-text"
+              value="true"
               .checked="${showDebugText}"
             />
           </div>
@@ -57,7 +58,21 @@ export class SetAudienceForm extends LitElement {
 
   submit(e) {
     e.preventDefault();
-    console.log(this.audience);
+
+    const formData = Object.fromEntries(new FormData(e.target));
+
+    const event = new CustomEvent("updateAppContext", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        payload: {
+          audience: formData["input-audience"],
+          showDebugText: formData["input-show-debug-text"] || false,
+        },
+      },
+    });
+
+    this.dispatchEvent(event);
   }
 }
 

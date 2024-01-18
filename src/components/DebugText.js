@@ -8,7 +8,10 @@ export class DebugText extends LitElement {
     text: { type: Text },
   };
 
-  _appContextConsumer = new ContextConsumer(this, { context: appContext });
+  _appContextConsumer = new ContextConsumer(this, {
+    context: appContext,
+    subscribe: true,
+  });
 
   static styles = css`
     .debug-text {
